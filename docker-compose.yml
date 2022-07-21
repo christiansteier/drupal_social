@@ -1,0 +1,29 @@
+
+version: '3.9'
+
+services:
+  open_social:
+    image: cms0/open_social
+    container_name: open_social
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - open_social
+
+  open_social_db:
+    image: mariadb:10.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: social
+    volumes:
+      - ./db/open-social:/var/lib/mysql
+    container_name: open_social_db
+    command: mysqld --max_allowed_packet=16M
+    networks:
+      - open_social
+
+networks:
+  open_social:
